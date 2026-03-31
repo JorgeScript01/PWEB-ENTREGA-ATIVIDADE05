@@ -1,7 +1,8 @@
 // src/services/EntregasService.js
 export class EntregasService {
-  constructor(repository) {
+  constructor(repository, motoristasRepository) {
     this.repository = repository;
+    this.motoristasRepository = motoristasRepository;
   }
 
   criar({ descricao, origem, destino }) {
@@ -25,7 +26,8 @@ export class EntregasService {
       origem,
       destino,
       status: "CRIADA",
-      historico: []
+      historico: [],
+      motoristaId: null
     });
 
     this._addEvento(entrega, "Entrega criada");
@@ -79,6 +81,29 @@ export class EntregasService {
 
     return entrega;
   }
+
+  atribuirMotorista(entregaId, motoristaId) {
+  const entrega = this.buscarPorId(entregaId);
+
+  const motorista = this.motoristasRepository.buscarPorId(motoristaId);
+  if (!motorista) {
+    throw new Error("Motorista não encontrado");
+  }
+
+  if (entrega.status !== "CRIADA") {
+    throw new Error("Só pode atribuir motorista em entregas CRIADAS");
+  }
+
+  if (motorista.status !== "ATIVO") {
+    throw new Error("Motorista está inativo");
+  }
+
+  entrega.motoristaId = motoristaId;
+
+  this._addEvento(entrega, `Motorista ${motorista.nome} atribuído`);
+
+  return entrega;
+}
 
   historico(id) {
     const entrega = this.buscarPorId(id);
