@@ -1,6 +1,6 @@
 // src/app.js
 import express from "express";
-import entregasRoutes from "./routes/entregas.routes.js";
+import entregasRoutes from "./src/routes/entregas.routes.js";
 
 const app = express();
 app.use(express.json());
