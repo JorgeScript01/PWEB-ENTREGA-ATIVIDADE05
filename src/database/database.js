@@ -1,16 +1,10 @@
-// src/database/database.js
-export class Database {
-  constructor() {
-    this.entregas = [];
-    this.nextId = 1;
-    this.motoristas = [];
-  }
+import pkg from "pg";
+import dotenv from "dotenv";
 
-  getEntregas() {
-    return this.entregas;
-  }
+dotenv.config();
 
-  generateId() {
-    return this.nextId++;
-  }
-}
+const { Pool } = pkg;
+
+export const pool = new Pool({
+  connectionString: process.env.DATABASE_URL
+});
