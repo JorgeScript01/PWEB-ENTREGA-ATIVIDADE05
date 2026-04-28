@@ -1,28 +1,74 @@
+import { pool } from "../database/database.js";
+
 export class MotoristasRepository {
-  constructor(database) {
-    this.database = database;
-    this.database.motoristas = this.database.motoristas || [];
+  async listarTodos() {
+  const result = await pool.query("SELECT * FROM motoristas");
+  return result.rows; // isso já deveria ser JSON puro
+}
+
+  async buscarPorId(id) {
+    const result = await pool.query(
+      "SELECT * FROM motoristas WHERE id = $1",
+      [id]
+    );
+    return result.rows[0] || null;
   }
 
-  listarTodos() {
-    return this.database.motoristas;
+  async buscarPorCPF(cpf) {
+    const result = await pool.query(
+      "SELECT * FROM motoristas WHERE cpf = $1",
+      [cpf]
+    );
+    return result.rows[0] || null;
   }
 
-  buscarPorId(id) {
-    return this.database.motoristas.find(m => m.id === id);
-  }
+  async criar(dados) {
+    try {
+      const result = await pool.query(
+        `INSERT INTO motoristas (nome, cpf, placa_veiculo, status)
+         VALUES ($1, $2, $3, $4)
+         RETURNING *`,
+        [dados.nome, dados.cpf, dados.placaVeiculo, dados.status]
+      );
 
-  buscarPorCPF(cpf) {
-    return this.database.motoristas.find(m => m.cpf === cpf);
+      return result.rows[0];
+    } catch (err) {
+      console.log("ERRO REAL DO BANCO:", err);
+      if (err.code === "23505") {
+        const error = new Error("CPF já cadastrado");
+        error.status = 409;
+        throw error;
+      }
+      throw err;
+    }
   }
+  async motoristasAtivos() {
+  const result = await pool.query(`
+    SELECT 
+      m.id as "motoristaId",
+      m.nome,
+      COUNT(e.id) as "entregasEmAberto"
+    FROM motoristas m
+    JOIN entregas e ON e.motorista_id = m.id
+    WHERE e.status NOT IN ('ENTREGUE', 'CANCELADA')
+    GROUP BY m.id, m.nome
+  `);
 
-  criar(dados) {
-    const motorista = {
-      id: this.database.generateId(),
-      ...dados
-    };
+  return result.rows;
+}
 
-    this.database.motoristas.push(motorista);
-    return motorista;
-  }
+async motoristasAtivos() {
+  const result = await pool.query(`
+    SELECT 
+      m.id as "motoristaId",
+      m.nome,
+      COUNT(e.id) as "entregasEmAberto"
+    FROM motoristas m
+    JOIN entregas e ON e.motorista_id = m.id
+    WHERE e.status NOT IN ('ENTREGUE', 'CANCELADA')
+    GROUP BY m.id, m.nome
+  `);
+
+  return result.rows;
+}
 }

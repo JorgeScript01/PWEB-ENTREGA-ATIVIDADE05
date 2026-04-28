@@ -3,26 +3,31 @@ export class MotoristasService {
     this.repository = repository;
   }
 
-  criar({ nome, cpf, placaVeiculo }) {
-    if (this.repository.buscarPorCPF(cpf)) {
-      const err = new Error("CPF já cadastrado");
-      err.status = 409;
-      throw err;
-    }
+  async criar({ nome, cpf, placaVeiculo }) {
+  const existente = await this.repository.buscarPorCPF(cpf);
 
-    return this.repository.criar({
-      nome,
-      cpf,
-      placaVeiculo,
-      status: "ATIVO"
-    });
+  if (existente) {
+    const err = new Error("CPF já cadastrado");
+    err.status = 409;
+    throw err;
   }
 
-  listar() {
+  return await this.repository.criar({
+    nome,
+    cpf,
+    placaVeiculo,
+    status: "ATIVO"
+  });
+}
+
+  async listar() {
     return this.repository.listarTodos();
   }
 
-  buscarPorId(id) {
+  async buscarPorId(id) {
     return this.repository.buscarPorId(id);
   }
+  async motoristasAtivos() {
+  return await this.repository.motoristasAtivos();
+}
 }

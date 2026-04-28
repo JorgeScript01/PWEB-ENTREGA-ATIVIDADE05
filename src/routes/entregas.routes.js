@@ -1,6 +1,6 @@
 // src/routes/entregas.routes.js
 import express from "express";
-import { Database } from "../database/database.js";
+//import { Database } from "../database/database.js";
 import { EntregasRepository } from "../repositories/EntregasRepository.js";
 import { EntregasService } from "../services/EntregasService.js";
 import { EntregasController } from "../controllers/EntregasController.js";
@@ -11,11 +11,11 @@ import { MotoristasController } from "../controllers/MotoristasController.js";
 const router = express.Router();
 
 // Injeção de dependência
-const database = new Database(); //ordem importa primerio db -> repo -> serv -> cont
+//const database = new Database(); //ordem importa primerio db -> repo -> serv -> cont
 
 //repos
-const entregasRepo = new EntregasRepository(database);
-const motoristasRepo = new MotoristasRepository(database);
+const entregasRepo = new EntregasRepository();
+const motoristasRepo = new MotoristasRepository();
 
 // services
 const service = new EntregasService(entregasRepo, motoristasRepo);
@@ -55,6 +55,14 @@ router.get("/motoristas", (req, res) =>
 
 router.get("/motoristas/:id", (req, res) =>
   motoristasController.buscar(req, res)
+);
+
+router.get("/relatorios/entregas-por-status", (req, res) =>
+  controller.relatorioStatus(req, res)
+);
+
+router.get("/relatorios/motoristas-ativos", (req, res) =>
+  motoristasController.motoristasAtivos(req, res)
 );
 
 export default router;
