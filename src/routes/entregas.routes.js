@@ -32,13 +32,15 @@ router.patch("/entregas/:id/avancar", (req, res) => controller.avancar(req, res)
 router.patch("/entregas/:id/cancelar", (req, res) => controller.cancelar(req, res));
 router.get("/entregas/:id/historico", (req, res) => controller.historico(req, res));
 
-router.patch("/entregas/:id/atribuir", (req, res) => {
+router.patch("/entregas/:id/atribuir", async (req, res) => {
   try {
     const { motoristaId } = req.body;
-    const entrega = service.atribuirMotorista(
+
+    const entrega = await service.atribuirMotorista(
       Number(req.params.id),
       motoristaId
     );
+
     res.json(entrega);
   } catch (err) {
     res.status(400).json({ erro: err.message });

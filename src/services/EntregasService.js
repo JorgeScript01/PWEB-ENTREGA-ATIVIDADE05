@@ -28,7 +28,7 @@ export class EntregasService {
       origem,
       destino,
       status: "CRIADA",
-      motorista_id: null
+      motoristaId: null
     });
 
     await this.repository.adicionarEvento(entrega.id, "Entrega criada");
@@ -108,7 +108,7 @@ export class EntregasService {
     );
 
     return await this.repository.atualizar(entregaId, {
-      motorista_id: motoristaId
+      motoristaId: motoristaId
     });
   }
 

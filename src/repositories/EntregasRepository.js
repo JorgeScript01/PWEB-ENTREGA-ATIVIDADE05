@@ -1,83 +1,69 @@
-import { pool } from "../database/database.js";
+import { prisma } from "../database/prisma.js";
 
 export class EntregasRepository {
   async listarTodos() {
-    const result = await pool.query("SELECT * FROM entregas");
-    return result.rows;
+    return await prisma.entrega.findMany({
+      include: {
+        eventos: true,
+        motorista: true
+      }
+    });
   }
 
   async buscarPorId(id) {
-    const result = await pool.query(
-      "SELECT * FROM entregas WHERE id = $1",
-      [id]
-    );
-    return result.rows[0] || null;
+    return await prisma.entrega.findUnique({
+      where: { id },
+      include: {
+        eventos: true,
+        motorista: true
+      }
+    });
   }
 
-  async criar(dados) {
-    const result = await pool.query(
-      `INSERT INTO entregas (descricao, origem, destino, status, motorista_id)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING *`,
-      [
-        dados.descricao,
-        dados.origem,
-        dados.destino,
-        dados.status,
-        dados.motorista_id || null
-      ]
-    );
+  async buscarEventos(entregaId) {
+  return await prisma.eventoEntrega.findMany({
+    where: { entregaId },
+    orderBy: { data: "asc" }
+  });
+}
 
-    return result.rows[0];
+  async criar(dados) {
+    return await prisma.entrega.create({
+      data: {
+        descricao: dados.descricao,
+        origem: dados.origem,
+        destino: dados.destino,
+        status: dados.status,
+        motoristaId: dados.motoristaId || null
+      }
+    });
   }
 
   async atualizar(id, dados) {
-    const result = await pool.query(
-      `UPDATE entregas
-       SET status = COALESCE($1, status),
-           motorista_id = COALESCE($2, motorista_id)
-       WHERE id = $3
-       RETURNING *`,
-      [
-        dados.status ?? null,
-        dados.motorista_id ?? null,
-        id
-      ]
-    );
-
-    return result.rows[0] || null;
+    return await prisma.entrega.update({
+      where: { id },
+      data: {
+        status: dados.status,
+        motoristaId: dados.motoristaId || null
+      }
+    });
   }
 
-  // 🔥 NOVO: adicionar evento no histórico
   async adicionarEvento(entregaId, descricao) {
-    await pool.query(
-      `INSERT INTO eventos_entrega (entrega_id, descricao, data)
-       VALUES ($1, $2, NOW())`,
-      [entregaId, descricao]
-    );
-  }
+  return await prisma.eventoEntrega.create({
+    data: {
+      descricao,
+      entregaId
+    }
+  });
+}
 
-  // 🔥 NOVO: buscar histórico
-  async buscarEventos(entregaId) {
-    const result = await pool.query(
-      `SELECT data, descricao
-       FROM eventos_entrega
-       WHERE entrega_id = $1
-       ORDER BY data ASC`,
-      [entregaId]
-    );
-
-    return result.rows;
-  }
-
-  // 🔥 RELATÓRIO
   async relatorioPorStatus() {
-    const result = await pool.query(`
-      SELECT status, COUNT(*) as total
-      FROM entregas
-      GROUP BY status
-    `);
-
-    return result.rows;
+    return await prisma.entrega.groupBy({
+      by: ["status"],
+      _count: {
+        status: true
+      }
+    });
   }
 }
