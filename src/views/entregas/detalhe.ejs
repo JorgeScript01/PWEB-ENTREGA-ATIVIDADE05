@@ -1,0 +1,34 @@
+<%- include('../partials/nav') %>
+
+<h1><%= entrega.descricao %></h1>
+
+<%- include('../partials/flash') %>
+
+<p><strong>Origem:</strong> <%= entrega.origem %></p>
+<p><strong>Destino:</strong> <%= entrega.destino %></p>
+<p><strong>Status:</strong> <%= entrega.status %></p>
+
+<hr>
+
+<h2>Histórico</h2>
+
+<ul>
+  <% historico.forEach(e => { %>
+    <li>
+      <%= new Date(e.data).toLocaleString() %> - 
+      <%= e.descricao %>
+    </li>
+  <% }) %>
+</ul>
+
+<hr>
+
+<h2>Ações</h2>
+
+<form action="/painel/entregas/<%= entrega.id %>?_method=PATCH" method="POST">
+  <button type="submit">Avançar Status</button>
+</form>
+
+<form action="/painel/entregas/<%= entrega.id %>/cancelar?_method=PATCH" method="POST">
+  <button type="submit">Cancelar</button>
+</form>

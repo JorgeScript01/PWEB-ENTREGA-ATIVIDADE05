@@ -1,0 +1,15 @@
+<%- include('../partials/nav') %>
+
+<h1>Nova Entrega</h1>
+
+<% if (erro) { %>
+  <p style="color: red;"><%= erro %></p>
+<% } %>
+
+<form action="/painel/entregas" method="POST">
+  <input name="descricao" placeholder="Descrição" value="<%= dados.descricao || '' %>" />
+  <input name="origem" placeholder="Origem" value="<%= dados.origem || '' %>" />
+  <input name="destino" placeholder="Destino" value="<%= dados.destino || '' %>" />
+
+  <button type="submit">Criar</button>
+</form>

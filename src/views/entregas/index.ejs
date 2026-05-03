@@ -1,0 +1,17 @@
+<%- include('../partials/nav') %>
+
+<h1>Lista de Entregas</h1>
+
+<a href="/painel/entregas/nova">+ Nova Entrega</a>
+
+<%- include('../partials/flash') %>
+
+<ul>
+  <% entregas.forEach(e => { %>
+    <li>
+      <strong><%= e.descricao %></strong> -
+      <%= e.origem %> → <%= e.destino %> -
+      <%= e.status %>
+    </li>
+  <% }) %>
+</ul>

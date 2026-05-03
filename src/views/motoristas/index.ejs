@@ -1,0 +1,18 @@
+<%- include('../partials/nav') %>
+
+<h1>Motoristas</h1>
+
+<%- include('../partials/flash') %>
+
+<a href="/painel/motoristas/novo">Novo motorista</a>
+
+<ul>
+  <% motoristas.forEach(m => { %>
+    <li>
+      <strong><%= m.nome %></strong> |
+      CPF: <%= m.cpf %> |
+      Placa: <%= m.placaVeiculo %> |
+      Status: <%= m.status %>
+    </li>
+  <% }) %>
+</ul>

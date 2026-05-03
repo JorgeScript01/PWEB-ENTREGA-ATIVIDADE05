@@ -1,0 +1,36 @@
+<%- include('../partials/nav') %>
+
+<h1>Novo Motorista</h1>
+
+<% if (erro) { %>
+  <p style="color:red;"><%= erro %></p>
+<% } %>
+
+<form action="/painel/motoristas" method="POST">
+
+  <input 
+    name="nome" 
+    placeholder="Nome"
+    value="<%= dados.nome || '' %>"
+  >
+
+  <input 
+    name="cpf" 
+    placeholder="CPF"
+    value="<%= dados.cpf || '' %>"
+  >
+
+  <input 
+    name="placaVeiculo" 
+    placeholder="Placa"
+    value="<%= dados.placaVeiculo || '' %>"
+  >
+
+  <select name="status">
+    <option value="ATIVO">ATIVO</option>
+    <option value="INATIVO">INATIVO</option>
+  </select>
+
+  <button type="submit">Salvar</button>
+
+</form>
