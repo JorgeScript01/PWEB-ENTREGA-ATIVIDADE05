@@ -1,140 +1,72 @@
-# 🚚 Delivery Tracker API
+# Atividade 08 — API de Entregas com Prisma
 
-API REST desenvolvida para gerenciamento de entregas e motoristas, com persistência em banco de dados PostgreSQL.
+Sistema de gerenciamento de entregas utilizando Prisma ORM e PostgreSQL.
 
----
+## Tecnologias
 
-## 📌 Descrição
-
-O sistema permite:
-
-* Cadastro de motoristas
-* Criação e gerenciamento de entregas
-* Acompanhamento de status das entregas
-* Registro de histórico de eventos
-* Geração de relatórios
-
-A aplicação foi estruturada seguindo o padrão em camadas:
-
-* **Controller** → tratamento HTTP
-* **Service** → regras de negócio
-* **Repository** → acesso ao banco de dados
+- Node.js
+- Express
+- Prisma ORM
+- PostgreSQL
+- Supabase
 
 ---
 
-## 🛠 Tecnologias Utilizadas
+# Como executar
 
-* Node.js
-* Express
-* PostgreSQL
-* SQL puro (sem ORM)
-* pg (node-postgres)
-* dotenv
-
----
-
-## 🗄️ Banco de Dados
-
-O projeto utiliza PostgreSQL com as seguintes tabelas:
-
-* `motoristas`
-* `entregas`
-* `eventos_entrega`
-
-### 📄 Migration
-
-Execute o arquivo `migration.sql` para criar as tabelas:
-
-```bash
-psql -U usuario -d delivery_tracker -f migration.sql
-```
-
----
-
-## ⚙️ Configuração do Ambiente
-
-Crie um arquivo `.env` na raiz do projeto baseado no `.env.example`:
-
-```env
-DATABASE_URL=postgresql://usuario:senha@localhost:5432/delivery_tracker
-```
-
----
-
-## ▶️ Como Executar
+## Instalar dependências
 
 ```bash
 npm install
-node app.js
-```
-
-Servidor disponível em:
-
-```
-http://localhost:3000/api
 ```
 
 ---
 
-## 📮 Rotas da API
+## Criar `.env`
 
-### 🚗 Motoristas
-
-* `POST /api/motoristas` → Criar motorista
-* `GET /api/motoristas` → Listar motoristas
-* `GET /api/motoristas/:id` → Buscar por ID
-
----
-
-### 📦 Entregas
-
-* `POST /api/entregas` → Criar entrega
-* `GET /api/entregas` → Listar entregas
-* `GET /api/entregas/:id` → Buscar por ID
-* `PATCH /api/entregas/:id/avancar` → Avançar status
-* `PATCH /api/entregas/:id/cancelar` → Cancelar entrega
-* `PATCH /api/entregas/:id/atribuir` → Atribuir motorista
-* `GET /api/entregas/:id/historico` → Histórico da entrega
-
----
-
-### 📊 Relatórios
-
-* `GET /api/relatorios/entregas-por-status`
-* `GET /api/relatorios/motoristas-ativos`
-
----
-
-## 🧪 Testes
-
-Os testes da API podem ser realizados utilizando o Postman.
-
-Uma collection está disponível em:
-
-```
-/postman/collection.json
+```env
+DATABASE_URL="SUA_URL_DO_SUPABASE"
 ```
 
 ---
 
-## 🧠 Conceitos Aplicados
+## Executar migrations
 
-* Arquitetura em camadas
-* Inversão de dependência
-* Persistência com SQL puro
-* Relacionamentos com chave estrangeira
-* Tratamento de erros de domínio
-* Queries com JOIN e GROUP BY
+```bash
+npx prisma migrate deploy
+```
 
 ---
 
-## 📌 Observações
+## Iniciar servidor
 
-* Os services não foram modificados durante a migração para banco de dados, garantindo desacoplamento entre regras de negócio e persistência.
-* O histórico das entregas é armazenado na tabela `eventos_entrega`.
+```bash
+npm start
+```
 
 ---
 
-## 👨‍💻 Autor
+# Endpoints
 
-Jorge Matheus Bomfim
+## Entregas
+
+- GET `/entregas`
+- GET `/entregas/:id`
+- POST `/entregas`
+- PATCH `/entregas/:id`
+- PATCH `/entregas/:id/cancelar`
+
+---
+
+## Motoristas
+
+- GET `/motoristas`
+- POST `/motoristas`
+
+---
+
+# Regras de negócio
+
+- Controle de status de entregas
+- Histórico automático de eventos
+- Associação entre entrega e motorista
