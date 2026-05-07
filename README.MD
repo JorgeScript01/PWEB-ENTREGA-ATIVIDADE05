@@ -135,6 +135,108 @@ Uma collection está disponível em:
 
 ---
 
+## Pra me ajudar na hora de apresentar:
+# Atividade 07 — API de Entregas
+
+Sistema de gerenciamento de entregas utilizando Node.js, Express e PostgreSQL.
+
+## Tecnologias
+
+- Node.js
+- Express
+- PostgreSQL
+- Supabase
+
+---
+
+# Como executar
+
+## 1. Instalar dependências
+
+```bash
+npm install
+```
+
+---
+
+## 2. Criar arquivo `.env`
+
+```env
+DATABASE_URL="SUA_URL_DO_SUPABASE"
+```
+
+---
+
+## 3. Iniciar servidor
+
+```bash
+npm start
+```
+
+Servidor:
+
+```text
+http://localhost:3000
+```
+
+---
+
+# Endpoints
+
+## Listar entregas
+
+GET `/entregas`
+
+---
+
+## Buscar entrega por ID
+
+GET `/entregas/:id`
+
+---
+
+## Criar motorista
+
+POST `/motoristas`
+
+Exemplo:
+
+```json
+{
+  "nome": "João",
+  "cpf": "12345678900",
+  "placaVeiculo": "ABC1234",
+  "status": "DISPONIVEL"
+}
+```
+
+---
+
+## Criar entrega
+
+POST `/entregas`
+
+Exemplo:
+
+```json
+{
+  "descricao": "Notebook",
+  "origem": "Maceió",
+  "destino": "Recife",
+  "status": "CRIADA",
+  "id": 1
+}
+```
+
+---
+
+# Observações
+
+- O sistema utiliza PostgreSQL hospedado no Supabase.
+- As tabelas foram criadas utilizando SQL puro.
+- A aplicação possui relacionamento entre entregas e motoristas.
+
+
 ## 👨‍💻 Autor
 
 Jorge Matheus Bomfim
