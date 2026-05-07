@@ -135,6 +135,114 @@ Uma collection está disponível em:
 
 ---
 
+## Pra me ajudar na hora de apresentar:
+# Atividade 09 — Painel SSR de Entregas
+
+Sistema completo de gerenciamento de entregas com renderização SSR utilizando EJS.
+
+## Tecnologias
+
+- Node.js
+- Express
+- EJS
+- Prisma ORM
+- PostgreSQL
+- Supabase
+
+---
+
+# Como executar
+
+## Instalar dependências
+
+```bash
+npm install
+```
+
+---
+
+## Criar `.env`
+
+```env
+DATABASE_URL="SUA_URL_DO_SUPABASE"
+```
+
+---
+
+## Executar migrations
+
+```bash
+npx prisma migrate deploy
+```
+
+---
+
+## Iniciar servidor
+
+```bash
+npm start
+```
+
+---
+
+# Acesso
+
+Painel:
+
+```text
+http://localhost:3000/painel/entregas
+```
+
+---
+
+# Funcionalidades
+
+## Entregas
+
+- Listagem
+- Criação
+- Detalhamento
+- Avançar status
+- Cancelamento
+- Histórico de eventos
+
+---
+
+## Motoristas
+
+- Cadastro
+- Listagem
+
+---
+
+# Rotas do painel
+
+## Entregas
+
+- GET `/painel/entregas`
+- GET `/painel/entregas/nova`
+- POST `/painel/entregas`
+- GET `/painel/entregas/:id`
+- PATCH `/painel/entregas/:id`
+- PATCH `/painel/entregas/:id/cancelar`
+
+---
+
+## Motoristas
+
+- GET `/painel/motoristas`
+- GET `/painel/motoristas/novo`
+- POST `/painel/motoristas`
+
+---
+
+# Observações
+
+- O sistema utiliza SSR com EJS.
+- O banco está hospedado no Supabase.
+- O Prisma é utilizado como ORM.
+- O sistema possui feedback visual utilizando mensagens flash.
+
 ## 👨‍💻 Autor
 
 Jorge Matheus Bomfim
