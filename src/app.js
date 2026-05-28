@@ -13,6 +13,7 @@ import session from "express-session";
 // linkando routes do painel
 import painelRoutes from "./routes/painel.routes.js";
 
+import authRoutes from "./routes/auth.routes.js";
 
 const app = express();
 app.use(express.json());
@@ -35,9 +36,14 @@ app.use(session({
 app.get("/teste", (req, res) => {
   res.render("teste");
 });
+
+app.use("/api/auth", authRoutes);
+
 app.use("/api", entregasRoutes);
 
 app.use("/painel", painelRoutes);
+
+
 
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000");
