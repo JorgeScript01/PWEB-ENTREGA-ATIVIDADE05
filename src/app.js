@@ -43,7 +43,11 @@ app.use("/api", entregasRoutes);
 
 app.use("/painel", painelRoutes);
 
+app.get("/login", (req, res) => {
+  res.render("login");
+});
 
+app.use(express.static("src/public"));
 
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000");

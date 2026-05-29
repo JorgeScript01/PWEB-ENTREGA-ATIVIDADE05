@@ -1,6 +1,21 @@
+<link rel="stylesheet" href="/style.css">
+
 <nav>
-  <a href="/painel/entregas">Entregas</a> |
+  <a href="/painel/entregas">Entregas</a>
   <a href="/painel/motoristas">Motoristas</a>
+
+  <button onclick="logout()">
+    Sair
+  </button>
 </nav>
 
-<hr>
+<script>
+
+function logout(){
+
+  localStorage.removeItem("token");
+
+  window.location.href = "/login";
+}
+
+</script>

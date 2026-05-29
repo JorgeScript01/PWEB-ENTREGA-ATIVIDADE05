@@ -1,3 +1,13 @@
+<script>
+
+const token = localStorage.getItem("token");
+
+if(!token){
+  window.location.href = "/login";
+}
+
+</script>
+
 <%- include('../partials/nav') %>
 
 <h1>Lista de Entregas</h1>
