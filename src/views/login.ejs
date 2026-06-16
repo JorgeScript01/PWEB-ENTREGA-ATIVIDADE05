@@ -66,17 +66,29 @@ async function login(){
     const email = document.getElementById("email").value;
     const senha = document.getElementById("senha").value;
 
-    const response = await axios.post(
+    const response = await fetch(
       "/api/auth/login",
       {
-        email,
-        senha
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email,
+          senha
+        })
       }
     );
 
+    const data = await response.json();
+
+    if(!response.ok){
+      throw new Error(data.erro);
+    }
+
     localStorage.setItem(
       "token",
-      response.data.accessToken
+      data.accessToken
     );
 
     alert("Login realizado!");
@@ -85,9 +97,7 @@ async function login(){
 
   }catch(err){
 
-    alert(
-      err.response?.data?.erro || "Erro no login"
-    );
+    alert(err.message);
   }
 }
 

@@ -3,6 +3,8 @@ import { EntregasRepository } from "../repositories/EntregasRepository.js";
 import { EntregasService } from "../services/EntregasService.js";
 import { MotoristasRepository } from "../repositories/MotoristasRepository.js";
 import { MotoristasService } from "../services/MotoristasService.js";
+import { autenticar } from "../middlewares/autenticar.js";
+import { autorizar } from "../middlewares/autorizar.js";
 
 const router = express.Router();
 
@@ -89,7 +91,7 @@ router.patch("/entregas/:id", async (req, res) => {
 });
 
 // CANCELAR
-router.patch("/entregas/:id/cancelar", async (req, res) => {
+router.patch("/entregas/:id/cancelar",autenticar,autorizar("GESTOR"), async (req, res) => {
   try {
     await service.cancelar(Number(req.params.id));
 

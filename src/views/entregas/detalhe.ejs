@@ -40,6 +40,43 @@ if(!token){
   <button type="submit">Avançar Status</button>
 </form>
 
-<form action="/painel/entregas/<%= entrega.id %>/cancelar?_method=PATCH" method="POST">
-  <button type="submit">Cancelar</button>
-</form>
+<button
+  data-id="<%= entrega.id %>"
+  onclick="cancelarEntrega(this.dataset.id)"
+>
+  Cancelar
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+
+async function cancelarEntrega(id){
+
+  try{
+
+    const token = localStorage.getItem("token");
+
+    await axios.patch(
+      `/api/entregas/${id}/cancelar`,
+      {},
+      {
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    alert("Entrega cancelada!");
+
+    location.reload();
+
+  }catch(err){
+
+    alert(
+      err.response?.data?.erro || "Erro ao cancelar"
+    );
+  }
+}
+
+</script>
