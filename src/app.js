@@ -49,7 +49,9 @@ app.get("/login", (req, res) => {
 
 app.use(express.static("src/public"));
 
-app.listen(3000, () => {
-  console.log("Servidor rodando na porta 3000");
-});
+//app.listen(3000, () => {
+//  console.log("Servidor rodando na porta 3000");
+//});
+
+export default app;
   
